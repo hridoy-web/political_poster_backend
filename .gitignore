@@ -1,0 +1,55 @@
+# --- Dependencies ---
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+
+# --- Production Build Output ---
+dist/
+build/
+
+# --- Environment Variables
+.env
+.env.local
+.env.*.local
+
+# --- File Uploads & Temporary Storage
+public/temp/*
+!public/temp/.gitkeep
+uploads/
+*.tmp
+*.temp
+
+# --- Logs & Debugging ---
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+libsass.log
+binding.gyp.log
+
+# --- OS & Environment Specific Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# --- IDE, Editors & Debugging Tools ---
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+.vim/
+
+# --- Testing & Coverage ---
+coverage/
+.nyc_output/
