@@ -1,6 +1,5 @@
 import express from 'express'
 import cors from 'cors'
-import authRouter from './routes/auth.routes.js';
 import { errorHandler } from './middlewares/error.middleware.js';
 
 const app = express();
@@ -19,7 +18,12 @@ app.get('/', (req, res) => {
 })
 
 // routes import
+import authRouter from './routes/auth.routes.js';
+import uploadRouter from './routes/upload.routes.js';
+
+// endpoint
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/upload', uploadRouter)
 
 // global error handler
 app.use(errorHandler);
