@@ -20,10 +20,12 @@ app.get('/', (req, res) => {
 // routes import
 import authRouter from './routes/auth.routes.js';
 import uploadRouter from './routes/upload.routes.js';
+import templateRouter from './routes/template.routes.js';
 
 // endpoint
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/upload', uploadRouter)
+app.use('/api/v1/templates', templateRouter);
 
 // global error handler
 app.use(errorHandler);

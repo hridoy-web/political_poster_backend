@@ -5,8 +5,9 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "node dist/server.js",
-    "dev": "tsx watch --env-file=.env src/server.ts",
-    "build": "tsc"
+    "dev": "tsx watch --env-file=./.env src/server.ts",
+    "build": "tsc",
+    "seed": "tsx --env-file=./.env src/seeds/templateSeed.ts"
   },
   "keywords": [],
   "author": "",

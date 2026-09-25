@@ -4,6 +4,6 @@ import { upload } from '../middlewares/multer.middleware.js';
 
 const uploadRouter = Router();
 
-uploadRouter.post('/images',  upload.array('photos', 3), uploadImages);
+uploadRouter.post('/images', upload.array('photos', 3), uploadImages);
 
 export default uploadRouter;
