@@ -1,6 +1,5 @@
 // @ts-nocheck
 import puppeteerCore from 'puppeteer-core';
-import puppeteer from 'puppeteer';
 import chromium from '@sparticuz/chromium';
 import { uploadOnCloudinary } from '../config/cloudinary.js';
 
@@ -19,28 +18,11 @@ interface IRenderPosterOptions {
 
 export const renderPosterToImage = async (options: IRenderPosterOptions): Promise<string> => {
   const { htmlLayout, formData, uploadedPhotoUrls, slotsCount = 3 } = options;
-
-  const totalImages = uploadedPhotoUrls.length;
   
-  let userPhoto = uploadedPhotoUrls[0] || 'https://via.placeholder.com/300';
-  let leaderPhoto1 = 'https://via.placeholder.com/250';
-  let leaderPhoto2 = 'https://via.placeholder.com/250';
+  let userPhoto = uploadedPhotoUrls[2] || uploadedPhotoUrls[0] || 'https://via.placeholder.com/300';
+  let leaderPhoto1 = uploadedPhotoUrls[0] || 'https://via.placeholder.com/250';
+  let leaderPhoto2 = uploadedPhotoUrls[1] || uploadedPhotoUrls[0] || 'https://via.placeholder.com/250';
 
-  if (totalImages >= 3) {
-    leaderPhoto1 = uploadedPhotoUrls[0];
-    leaderPhoto2 = uploadedPhotoUrls[1];
-    userPhoto = uploadedPhotoUrls[2]; 
-  } else if (totalImages === 2) {
-    leaderPhoto1 = uploadedPhotoUrls[0];
-    leaderPhoto2 = uploadedPhotoUrls[0]; 
-    userPhoto = uploadedPhotoUrls[1]; 
-  } else if (totalImages === 1) {
-    userPhoto = uploadedPhotoUrls[0];
-    leaderPhoto1 = uploadedPhotoUrls[0];
-    leaderPhoto2 = uploadedPhotoUrls[0];
-  }
-
-  // Replace placeholders in HTML layout
   let compiledHtml = htmlLayout
     .replace(/{{HEADLINE}}/g, formData.headline)
     .replace(/{{NAME}}/g, formData.name)
@@ -52,50 +34,58 @@ export const renderPosterToImage = async (options: IRenderPosterOptions): Promis
     .replace(/{{LEADER_PHOTO_2}}/g, leaderPhoto2);
 
   let browser;
-  const isLocal = process.env.NODE_ENV !== 'production' && !process.env.RENDER;
 
-  // Fast launch configuration with extra performance arguments
-  const launchOptions = {
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--disable-gpu',
-    ],
-  };
+  try {
+    chromium.setHeadlessMode = true;
+    chromium.setGraphicsMode = false;
 
-  const page = await browser.newPage();
+    const executablePath = await chromium.executablePath();
 
-  // Set print dimensions (1200x1600px)
-  await page.setViewport({ width: 1200, height: 1600, deviceScaleFactor: 1 });
+    browser = await puppeteerCore.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: executablePath,
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+    });
 
-  // Set HTML content
-  await page.setContent(compiledHtml, { waitUntil: 'domcontentloaded' });
+    if (!browser) {
+      throw new Error('Failed to create browser instance on cloud server.');
+    }
 
-  // Ensure all <img> tags are fully loaded before taking screenshot quickly
-  await page.evaluate(async () => {
-    const images = Array.from(document.querySelectorAll('img'));
-    await Promise.all(
-      images.map((img: any) => {
-        if (img.complete) return Promise.resolve(true);
-        return new Promise((resolve) => {
-          img.onload = () => resolve(true);
-          img.onerror = () => resolve(true);
-        });
-      })
-    );
-  });
+    const page = await browser.newPage();
 
-  // Take screenshot of rendered poster as PNG buffer
-  const imageBuffer = (await page.screenshot({ type: 'png', optimizeForSpeed: true })) as Buffer;
+    await page.setViewport({ width: 1200, height: 1600, deviceScaleFactor: 1 });
+    await page.setContent(compiledHtml, { waitUntil: 'networkidle0', timeout: 60000 });
 
-  // Close browser quickly
-  await browser.close();
+    await page.evaluate(async () => {
+      const images = Array.from(document.querySelectorAll('img'));
+      await Promise.all(
+        images.map((img: any) => {
+          if (img.complete) return Promise.resolve(true);
+          return new Promise((resolve) => {
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(true);
+          });
+        })
+      );
+    });
 
-  // Upload image buffer to Cloudinary
-  const uploadResult = await uploadOnCloudinary(imageBuffer, 'generated_posters');
+    const imageBuffer = (await page.screenshot({ type: 'png', optimizeForSpeed: true })) as Buffer;
+    await browser.close();
 
-  return uploadResult.secure_url;
+    const uploadResult = await uploadOnCloudinary(imageBuffer, 'generated_posters');
+    return uploadResult.secure_url;
+
+  } catch (error) {
+    if (browser) {
+      try {
+        await browser.close();
+      } catch (e) {
+       
+      }
+    }
+    console.error('Detailed Cloud Render Error:', error);
+    throw error;
+  }
 };
