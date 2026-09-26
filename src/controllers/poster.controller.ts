@@ -12,8 +12,8 @@ const createPoster = asyncHandler(async (req: AuthRequest, res: Response) => {
   const userId = req.user?.id;
   const { templateId, formData, uploadedPhotoUrls } = req.body;
 
-  if (!templateId || !formData || !uploadedPhotoUrls || uploadedPhotoUrls.length === 0) {
-    throw new ApiError(400, 'Template ID, form data, and at least 1 photo URL are required.');
+  if (!templateId || !formData || !uploadedPhotoUrls || uploadedPhotoUrls.length !== 3) {
+    throw new ApiError(400, 'Template ID, form data, and exactly 3 photo URLs are required.');
   }
 
   const template = await Template.findById(templateId);
@@ -35,6 +35,7 @@ const createPoster = asyncHandler(async (req: AuthRequest, res: Response) => {
       htmlLayout: template.htmlLayout,
       formData: { ...formData, headline: formData.headline },
       uploadedPhotoUrls,
+      slotsCount: 3
     });
 
     poster.generatedImageUrl = generatedImageUrl;
@@ -43,18 +44,17 @@ const createPoster = asyncHandler(async (req: AuthRequest, res: Response) => {
 
     return res.status(201).json(
       new ApiResponse(201, poster, 'Poster generated successfully.')
-    )
+    );
 
   } catch (error) {
     console.error('Poster Generation Error:', error);
     poster.status = 'failed';
     await poster.save();
-    throw new ApiError(500, 'Failed to generate poster image.');
+    throw new ApiError(500, 'Failed to generate poster image.')
   }
-
 })
 
-// user history
+// User History
 const getUserPosters = asyncHandler(async (req: AuthRequest, res: Response) => {
   const userId = req.user?.id;
 
@@ -63,8 +63,8 @@ const getUserPosters = asyncHandler(async (req: AuthRequest, res: Response) => {
 
   return res.status(200).json(
     new ApiResponse(200, posters, 'User poster history fetched successfully.')
-  );
-});
+  )
+})
 
 // Regenerate Poster
 const regeneratePoster = asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -88,6 +88,7 @@ const regeneratePoster = asyncHandler(async (req: AuthRequest, res: Response) =>
       htmlLayout: template.htmlLayout,
       formData: { ...poster.formData, headline: poster.formData.headline },
       uploadedPhotoUrls: poster.uploadedPhotoUrls,
+      slotsCount: 3, 
     });
 
     poster.generatedImageUrl = generatedImageUrl;
@@ -103,7 +104,7 @@ const regeneratePoster = asyncHandler(async (req: AuthRequest, res: Response) =>
     await poster.save();
     throw new ApiError(500, 'Failed to regenerate poster image.');
   }
-});
+})
 
 // Delete Poster
 const deletePoster = asyncHandler(async (req: AuthRequest, res: Response) => {

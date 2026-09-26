@@ -10,11 +10,9 @@ const seedTemplates = async (): Promise<void> => {
       process.exit(1);
     }
 
-    // Database connection
     await mongoose.connect(mongoUri);
     console.log('Database connected successfully. Starting template seeding...');
 
-    // Clear existing templates
     await Template.deleteMany({});
 
     const dummyTemplates = [
@@ -47,7 +45,6 @@ const seedTemplates = async (): Promise<void> => {
         }
         .badge-text { color: #f87171; font-weight: 800; font-size: 24px; letter-spacing: 1px; }
         
-        /* Upore 2ti Leader Image */
         .leaders-grid { display: flex; justify-content: center; gap: 40px; margin-top: 10px; }
         .leader-card {
           width: 340px; height: 410px; border-radius: 24px; padding: 6px;
@@ -69,7 +66,6 @@ const seedTemplates = async (): Promise<void> => {
         }
         .headline-box h1 { margin: 0; font-size: 60px; font-weight: 800; line-height: 1.25; color: #fbbf24; }
 
-        /* Nicher White Carder modhe 1ti User Image */
         .footer-card {
           background: #ffffff; color: #022c22; border-radius: 30px; padding: 25px 35px;
           display: flex; align-items: center; gap: 30px;
@@ -89,19 +85,19 @@ const seedTemplates = async (): Promise<void> => {
         </div>
         <div class="leaders-grid">
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_1}}" alt="Leader 1">
-            <div class="leader-tag">জাতীয় নেতা</div>
+            <img src="{{LEADER_PHOTO_1}}" alt="Historical Context">
+            <div class="leader-tag">ঐতিহাসিক প্রেক্ষাপট</div>
           </div>
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_2}}" alt="Leader 2">
-            <div class="leader-tag">জাতীয় নেতা</div>
+            <img src="{{LEADER_PHOTO_2}}" alt="Liberation War">
+            <div class="leader-tag">মুক্তিযুদ্ধ ও চেতনা</div>
           </div>
         </div>
         <div class="headline-box">
           <h1>{{HEADLINE}}</h1>
         </div>
         <div class="footer-card">
-          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="User">
+          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="Author or Candidate">
           <div class="footer-info">
             <span class="promoter-tag">প্রচারে</span>
             <h2>{{NAME}}</h2>
@@ -184,19 +180,19 @@ const seedTemplates = async (): Promise<void> => {
         </div>
         <div class="leaders-grid">
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_1}}" alt="Leader 1">
-            <div class="leader-tag">জাতীয় নেতা</div>
+            <img src="{{LEADER_PHOTO_1}}" alt="Bijoy Ullash">
+            <div class="leader-tag">বিজয় উল্লাস</div>
           </div>
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_2}}" alt="Leader 2">
-            <div class="leader-tag">জাতীয় নেতা</div>
+            <img src="{{LEADER_PHOTO_2}}" alt="National Monument">
+            <div class="leader-tag">জাতীয় স্মৃতিসৌধ</div>
           </div>
         </div>
         <div class="headline-box">
           <h1>{{HEADLINE}}</h1>
         </div>
         <div class="footer-card">
-          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="User">
+          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="Author or Candidate">
           <div class="footer-info">
             <span class="promoter-tag">শুভেচ্ছান্তে</span>
             <h2>{{NAME}}</h2>
@@ -211,7 +207,7 @@ const seedTemplates = async (): Promise<void> => {
         isActive: true
       },
       {
-        title: 'Modern Election Campaign Poster (2-Photos)',
+        title: 'Modern Election Campaign Poster (3-Photos)',
         occasionType: 'নির্বাচনী প্রচার',
         thumbnailUrl: 'https://res.cloudinary.com/demo/image/upload/v1/sample.jpg',
         htmlLayout: `
@@ -240,17 +236,26 @@ const seedTemplates = async (): Promise<void> => {
         }
         .candidate-tag { background: #f59e0b; color: #0f172a; padding: 8px 25px; font-weight: 800; border-radius: 30px; font-size: 18px; }
 
-        .campaign-grid { display: flex; gap: 40px; align-items: center; }
-        .text-area { flex: 1; }
-        .text-area h1 { font-size: 68px; font-weight: 800; line-height: 1.2; margin: 0; color: #f59e0b; text-shadow: 0 10px 20px rgba(0,0,0,0.4); }
-        
-        /* 2-Photo Layout: Candidate Main Portrait */
-        .candidate-portrait {
-          width: 450px; height: 580px; border-radius: 30px; border: 6px solid #f59e0b;
-          overflow: hidden; box-shadow: 0 35px 70px rgba(0,0,0,0.7); flex-shrink: 0;
-          background: #000;
+        .leaders-grid { display: flex; justify-content: center; gap: 40px; margin-top: 10px; }
+        .leader-card {
+          width: 340px; height: 410px; border-radius: 24px; padding: 6px;
+          background: linear-gradient(135deg, #f59e0b, #3b82f6, #1e3a8a);
+          box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; overflow: hidden;
         }
-        .candidate-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .leader-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block; }
+        .leader-tag {
+          position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
+          background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+          color: #f59e0b; padding: 6px 22px; border-radius: 30px;
+          font-size: 18px; font-weight: 700; border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .headline-box {
+          background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(15px);
+          border: 2px solid rgba(245, 158, 11, 0.4); border-radius: 30px;
+          padding: 35px 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        .headline-box h1 { margin: 0; font-size: 55px; font-weight: 800; line-height: 1.25; color: #f59e0b; }
 
         .footer-card {
           background: #ffffff; color: #0f172a; border-radius: 30px; padding: 25px 35px;
@@ -267,18 +272,23 @@ const seedTemplates = async (): Promise<void> => {
       <main class="poster">
         <div class="top-header">
           <div class="candidate-tag">নির্বাচনী প্রচার</div>
-          <span style="font-size: 20px; color: #f59e0b; font-weight: 700;">উন্নয়ন ও অগ্রগতির প্রতীক</span>
+          <span style="font-size: 20px; color: #f59e0b; font-weight: 700;">উন্নয়ন ও অগ্রগতির প্রতীক</span>
         </div>
-        <div class="campaign-grid">
-          <div class="text-area">
-            <h1>{{HEADLINE}}</h1>
+        <div class="leaders-grid">
+          <div class="leader-card">
+            <img src="{{LEADER_PHOTO_1}}" alt="Campaign Rally">
+            <div class="leader-tag">জনসভা ও গণসংযোগ</div>
           </div>
-          <div class="candidate-portrait">
-            <img src="{{USER_PHOTO}}" alt="Candidate">
+          <div class="leader-card">
+            <img src="{{LEADER_PHOTO_2}}" alt="Development Vision">
+            <div class="leader-tag">উন্নয়ন পরিকল্পনা</div>
           </div>
+        </div>
+        <div class="headline-box">
+          <h1>{{HEADLINE}}</h1>
         </div>
         <div class="footer-card">
-          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="User">
+          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="Candidate Profile">
           <div class="footer-info">
             <span class="promoter-tag">প্রচারে</span>
             <h2>{{NAME}}</h2>
@@ -289,11 +299,11 @@ const seedTemplates = async (): Promise<void> => {
     </body>
     </html>
   `,
-        layoutConfig: { slots: 2, themeColor: 'modern-navy-gold' },
+        layoutConfig: { slots: 3, themeColor: 'modern-navy-gold' },
         isActive: true
       },
       {
-        title: 'Modern Rights & Public Welfare Poster (2-Photos)',
+        title: 'Modern Rights & Public Welfare Poster (3-Photos)',
         occasionType: 'অধিকার ও জনকল্যাণ',
         thumbnailUrl: 'https://res.cloudinary.com/demo/image/upload/v1/sample.jpg',
         htmlLayout: `
@@ -321,17 +331,27 @@ const seedTemplates = async (): Promise<void> => {
           color: #e879f9; padding: 15px 35px; font-weight: 700; font-size: 22px; 
           border-radius: 30px; border: 1px solid rgba(232, 121, 249, 0.3); 
         }
-        
-        .welfare-grid { display: flex; gap: 40px; align-items: center; }
-        .welfare-text { flex: 1; }
-        .welfare-text h1 { font-size: 64px; font-weight: 800; line-height: 1.25; color: #f0abfc; margin: 0; }
 
-        .welfare-portrait {
-          width: 440px; height: 560px; border-radius: 25px; border: 6px solid #e879f9;
-          overflow: hidden; box-shadow: 0 35px 70px rgba(0,0,0,0.8); flex-shrink: 0;
-          background: #000;
+        .leaders-grid { display: flex; justify-content: center; gap: 40px; margin-top: 10px; }
+        .leader-card {
+          width: 340px; height: 410px; border-radius: 24px; padding: 6px;
+          background: linear-gradient(135deg, #e879f9, #a855f7, #31103f);
+          box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; overflow: hidden;
         }
-        .welfare-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .leader-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block; }
+        .leader-tag {
+          position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
+          background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+          color: #e879f9; padding: 6px 22px; border-radius: 30px;
+          font-size: 18px; font-weight: 700; border: 1px solid rgba(232, 121, 249, 0.3);
+        }
+
+        .headline-box {
+          background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(15px);
+          border: 2px solid rgba(232, 121, 249, 0.4); border-radius: 30px;
+          padding: 35px 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        .headline-box h1 { margin: 0; font-size: 55px; font-weight: 800; line-height: 1.25; color: #f0abfc; }
 
         .footer-card {
           background: #ffffff; color: #1a0624; border-radius: 30px; padding: 25px 35px;
@@ -348,18 +368,23 @@ const seedTemplates = async (): Promise<void> => {
       <main class="poster">
         <div class="top-header">
           <span>নাগরিক অধিকার ও জনকল্যাণ আন্দোলন</span>
-          <span style="color:#ffffff; font-size:18px;">সচেতনতা ও ন্যায়বিচার</span>
+          <span style="color:#ffffff; font-size:18px;">সচেতনতা ও ন্যায়বিচার</span>
         </div>
-        <div class="welfare-grid">
-          <div class="welfare-text">
-            <h1>{{HEADLINE}}</h1>
+        <div class="leaders-grid">
+          <div class="leader-card">
+            <img src="{{LEADER_PHOTO_1}}" alt="Social Welfare">
+            <div class="leader-tag">সামাজিক ন্যায়বিচার</div>
           </div>
-          <div class="welfare-portrait">
-            <img src="{{USER_PHOTO}}" alt="Welfare Leader">
+          <div class="leader-card">
+            <img src="{{LEADER_PHOTO_2}}" alt="Public Rights">
+            <div class="leader-tag">জনগণের অধিকার</div>
           </div>
+        </div>
+        <div class="headline-box">
+          <h1>{{HEADLINE}}</h1>
         </div>
         <div class="footer-card">
-          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="User">
+          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="Organizer Profile">
           <div class="footer-info">
             <span class="promoter-tag">আহবানে</span>
             <h2>{{NAME}}</h2>
@@ -370,7 +395,7 @@ const seedTemplates = async (): Promise<void> => {
     </body>
     </html>
   `,
-        layoutConfig: { slots: 2, themeColor: 'modern-welfare-purple' },
+        layoutConfig: { slots: 3, themeColor: 'modern-welfare-purple' },
         isActive: true
       }
     ];
