@@ -17,8 +17,8 @@ const seedTemplates = async (): Promise<void> => {
 
     const dummyTemplates = [
       {
-        title: 'Modern Independence Day Poster (3-Photos)',
-        occasionType: 'স্বাধীনতা দিবস',
+        title: 'Modern Emerald Gold Poster (3-Photos)',
+        occasionType: 'সাধারণ বা জাতীয় দিবস',
         thumbnailUrl: 'https://res.cloudinary.com/demo/image/upload/v1/sample.jpg',
         htmlLayout: `
     <!DOCTYPE html>
@@ -43,7 +43,7 @@ const seedTemplates = async (): Promise<void> => {
           background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px);
           border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px 35px; border-radius: 50px;
         }
-        .badge-text { color: #f87171; font-weight: 800; font-size: 24px; letter-spacing: 1px; }
+        .badge-text { color: #fbbf24; font-weight: 800; font-size: 24px; letter-spacing: 1px; }
         
         .leaders-grid { display: flex; justify-content: center; gap: 40px; margin-top: 10px; }
         .leader-card {
@@ -52,12 +52,6 @@ const seedTemplates = async (): Promise<void> => {
           box-shadow: 0 25px 50px rgba(0,0,0,0.5); position: relative; overflow: hidden;
         }
         .leader-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block; }
-        .leader-tag {
-          position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
-          background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
-          color: #fbbf24; padding: 6px 22px; border-radius: 30px;
-          font-size: 18px; font-weight: 700; border: 1px solid rgba(251, 191, 36, 0.3);
-        }
 
         .headline-box {
           background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px);
@@ -80,24 +74,21 @@ const seedTemplates = async (): Promise<void> => {
     <body>
       <main class="poster">
         <div class="top-header">
-          <span class="badge-text">মহান স্বাধীনতা দিবস</span>
-          <span style="font-size: 20px; color: #fbbf24; font-weight: 700;">২৬ মার্চ ২০২৬</span>
+          <span class="badge-text">বিশেষ বার্তা</span>
         </div>
         <div class="leaders-grid">
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_1}}" alt="Historical Context">
-            <div class="leader-tag">ঐতিহাসিক প্রেক্ষাপট</div>
+            <img src="{{LEADER_PHOTO_1}}" alt="Context 1">
           </div>
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_2}}" alt="Liberation War">
-            <div class="leader-tag">মুক্তিযুদ্ধ ও চেতনা</div>
+            <img src="{{LEADER_PHOTO_2}}" alt="Context 2">
           </div>
         </div>
         <div class="headline-box">
           <h1>{{HEADLINE}}</h1>
         </div>
         <div class="footer-card">
-          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="Author or Candidate">
+          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="Author">
           <div class="footer-info">
             <span class="promoter-tag">প্রচারে</span>
             <h2>{{NAME}}</h2>
@@ -112,8 +103,8 @@ const seedTemplates = async (): Promise<void> => {
         isActive: true
       },
       {
-        title: 'Modern Victory Day Poster (3-Photos)',
-        occasionType: 'বিজয় দিবস',
+        title: 'Modern Crimson Gold Poster (3-Photos)',
+        occasionType: 'ঐতিহাসিক বা সামাজিক অনুষ্ঠান',
         thumbnailUrl: 'https://res.cloudinary.com/demo/image/upload/v1/sample.jpg',
         htmlLayout: `
     <!DOCTYPE html>
@@ -147,12 +138,6 @@ const seedTemplates = async (): Promise<void> => {
           box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; overflow: hidden;
         }
         .leader-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block; }
-        .leader-tag {
-          position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
-          background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
-          color: #10b981; padding: 6px 22px; border-radius: 30px;
-          font-size: 18px; font-weight: 700; border: 1px solid rgba(16, 185, 129, 0.3);
-        }
 
         .headline-box {
           background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(15px);
@@ -175,24 +160,21 @@ const seedTemplates = async (): Promise<void> => {
     <body>
       <main class="poster">
         <div class="top-header">
-          <span class="badge-text">মহান বিজয় দিবস</span>
-          <span style="font-size: 20px; color: #10b981; font-weight: 700;">১৬ ডিসেম্বর</span>
+          <span class="badge-text">বিশেষ বার্তা</span>
         </div>
         <div class="leaders-grid">
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_1}}" alt="Bijoy Ullash">
-            <div class="leader-tag">বিজয় উল্লাস</div>
+            <img src="{{LEADER_PHOTO_1}}" alt="Context 1">
           </div>
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_2}}" alt="National Monument">
-            <div class="leader-tag">জাতীয় স্মৃতিসৌধ</div>
+            <img src="{{LEADER_PHOTO_2}}" alt="Context 2">
           </div>
         </div>
         <div class="headline-box">
           <h1>{{HEADLINE}}</h1>
         </div>
         <div class="footer-card">
-          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="Author or Candidate">
+          <img class="footer-avatar" src="{{USER_PHOTO}}" alt="Author">
           <div class="footer-info">
             <span class="promoter-tag">শুভেচ্ছান্তে</span>
             <h2>{{NAME}}</h2>
@@ -207,8 +189,8 @@ const seedTemplates = async (): Promise<void> => {
         isActive: true
       },
       {
-        title: 'Modern Election Campaign Poster (3-Photos)',
-        occasionType: 'নির্বাচনী প্রচার',
+        title: 'Modern Navy Gold Poster (3-Photos)',
+        occasionType: 'নির্বাচনী ও রাজনৈতিক প্রচার',
         thumbnailUrl: 'https://res.cloudinary.com/demo/image/upload/v1/sample.jpg',
         htmlLayout: `
     <!DOCTYPE html>
@@ -243,12 +225,6 @@ const seedTemplates = async (): Promise<void> => {
           box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; overflow: hidden;
         }
         .leader-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block; }
-        .leader-tag {
-          position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
-          background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
-          color: #f59e0b; padding: 6px 22px; border-radius: 30px;
-          font-size: 18px; font-weight: 700; border: 1px solid rgba(245, 158, 11, 0.3);
-        }
 
         .headline-box {
           background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(15px);
@@ -271,17 +247,14 @@ const seedTemplates = async (): Promise<void> => {
     <body>
       <main class="poster">
         <div class="top-header">
-          <div class="candidate-tag">নির্বাচনী প্রচার</div>
-          <span style="font-size: 20px; color: #f59e0b; font-weight: 700;">উন্নয়ন ও অগ্রগতির প্রতীক</span>
+          <div class="candidate-tag">বিশেষ বার্তা</div>
         </div>
         <div class="leaders-grid">
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_1}}" alt="Campaign Rally">
-            <div class="leader-tag">জনসভা ও গণসংযোগ</div>
+            <img src="{{LEADER_PHOTO_1}}" alt="Context 1">
           </div>
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_2}}" alt="Development Vision">
-            <div class="leader-tag">উন্নয়ন পরিকল্পনা</div>
+            <img src="{{LEADER_PHOTO_2}}" alt="Context 2">
           </div>
         </div>
         <div class="headline-box">
@@ -303,8 +276,8 @@ const seedTemplates = async (): Promise<void> => {
         isActive: true
       },
       {
-        title: 'Modern Rights & Public Welfare Poster (3-Photos)',
-        occasionType: 'অধিকার ও জনকল্যাণ',
+        title: 'Modern Welfare Purple Poster (3-Photos)',
+        occasionType: 'জনকল্যাণ ও সামাজিক আন্দোলন',
         thumbnailUrl: 'https://res.cloudinary.com/demo/image/upload/v1/sample.jpg',
         htmlLayout: `
     <!DOCTYPE html>
@@ -321,10 +294,6 @@ const seedTemplates = async (): Promise<void> => {
           background: linear-gradient(135deg, #31103f, #1a0624, #05010a);
           color: #ffffff;
         }
-        .poster {
-          position: relative; z-index: 5; width: 100%; height: 100%;
-          padding: 60px; display: flex; flex-direction: column; justify-content: space-between;
-        }
         .top-header { 
           display: flex; justify-content: space-between; align-items: center;
           background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); 
@@ -339,12 +308,6 @@ const seedTemplates = async (): Promise<void> => {
           box-shadow: 0 25px 50px rgba(0,0,0,0.6); position: relative; overflow: hidden;
         }
         .leader-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block; }
-        .leader-tag {
-          position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%);
-          background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
-          color: #e879f9; padding: 6px 22px; border-radius: 30px;
-          font-size: 18px; font-weight: 700; border: 1px solid rgba(232, 121, 249, 0.3);
-        }
 
         .headline-box {
           background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(15px);
@@ -367,17 +330,14 @@ const seedTemplates = async (): Promise<void> => {
     <body>
       <main class="poster">
         <div class="top-header">
-          <span>নাগরিক অধিকার ও জনকল্যাণ আন্দোলন</span>
-          <span style="color:#ffffff; font-size:18px;">সচেতনতা ও ন্যায়বিচার</span>
+          <span>বিশেষ বার্তা</span>
         </div>
         <div class="leaders-grid">
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_1}}" alt="Social Welfare">
-            <div class="leader-tag">সামাজিক ন্যায়বিচার</div>
+            <img src="{{LEADER_PHOTO_1}}" alt="Context 1">
           </div>
           <div class="leader-card">
-            <img src="{{LEADER_PHOTO_2}}" alt="Public Rights">
-            <div class="leader-tag">জনগণের অধিকার</div>
+            <img src="{{LEADER_PHOTO_2}}" alt="Context 2">
           </div>
         </div>
         <div class="headline-box">
