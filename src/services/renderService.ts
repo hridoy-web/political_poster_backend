@@ -1,5 +1,6 @@
 // @ts-nocheck
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import { uploadOnCloudinary } from '../config/cloudinary.js';
 
 interface IRenderPosterOptions {
@@ -49,10 +50,12 @@ export const renderPosterToImage = async (options: IRenderPosterOptions): Promis
     .replace(/{{LEADER_PHOTO_1}}/g, leaderPhoto1)
     .replace(/{{LEADER_PHOTO_2}}/g, leaderPhoto2);
 
-  // Launch headless browser instance
+  // Launch headless browser instance using @sparticuz/chromium for Render / Serverless environment
   const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
   });
 
   const page = await browser.newPage();
