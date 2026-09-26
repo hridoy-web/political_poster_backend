@@ -6,14 +6,26 @@ import { Template } from '../models/Template.js';
 import { renderPosterToImage } from '../services/renderService.js';
 import { AuthRequest } from '../middlewares/auth.middleware.js';
 import { Poster } from '../models/Poster.js';
+import { uploadOnCloudinary } from '../config/cloudinary.js';
 
 // Poster Generate
 const createPoster = asyncHandler(async (req: AuthRequest, res: Response) => {
   const userId = req.user?.id;
-  const { templateId, formData, uploadedPhotoUrls } = req.body;
+  
+  let parsedFormData: { headline?: string; [key: string]: unknown } = {};
+  if (req.body.formData) {
+    try {
+      parsedFormData = JSON.parse(req.body.formData);
+    } catch {
+      parsedFormData = { headline: req.body.formData };
+    }
+  }
 
-  if (!templateId || !formData || !uploadedPhotoUrls || uploadedPhotoUrls.length !== 3) {
-    throw new ApiError(400, 'Template ID, form data, and exactly 3 photo URLs are required.');
+  const { templateId } = req.body;
+  const files = req.files as Express.Multer.File[];
+
+  if (!templateId || !files || files.length !== 3) {
+    throw new ApiError(400, 'Template ID and exactly 3 image files are required.');
   }
 
   const template = await Template.findById(templateId);
@@ -21,11 +33,23 @@ const createPoster = asyncHandler(async (req: AuthRequest, res: Response) => {
     throw new ApiError(404, 'Selected template not found or inactive.');
   }
 
+  const uploadedPhotoUrls: string[] = [];
+
+  for (const file of files) {
+    const uploadPathOrBuffer = file.path || file.buffer;
+    const uploadResult = await uploadOnCloudinary(uploadPathOrBuffer as any);
+    
+    if (!uploadResult || !uploadResult.url) {
+      throw new ApiError(500, 'Failed to upload images to Cloudinary.');
+    }
+    uploadedPhotoUrls.push(uploadResult.url);
+  }
+
   // Create record in database
   const poster = await Poster.create({
     userId,
     templateId,
-    formData,
+    formData: parsedFormData,
     uploadedPhotoUrls,
     status: 'generating',
   });
@@ -33,7 +57,14 @@ const createPoster = asyncHandler(async (req: AuthRequest, res: Response) => {
   try {
     const generatedImageUrl = await renderPosterToImage({
       htmlLayout: template.htmlLayout,
-      formData: { ...formData, headline: formData.headline },
+      formData: {
+        ...parsedFormData,
+        name: (parsedFormData.name as string) || "",
+        designation: (parsedFormData.designation as string) || "",
+        party: (parsedFormData.party as string) || "",
+        unionOrThanaOrDistrict: (parsedFormData.unionOrThanaOrDistrict as string) || "",
+        headline: parsedFormData.headline || "",
+      },
       uploadedPhotoUrls,
       slotsCount: 3
     });
@@ -50,15 +81,13 @@ const createPoster = asyncHandler(async (req: AuthRequest, res: Response) => {
     console.error('Poster Generation Error:', error);
     poster.status = 'failed';
     await poster.save();
-    throw new ApiError(500, 'Failed to generate poster image.')
+    throw new ApiError(500, 'Failed to generate poster image.');
   }
 })
 
 // User History
 const getUserPosters = asyncHandler(async (req: AuthRequest, res: Response) => {
   const userId = req.user?.id;
-
-  // Fetch poster history for authenticated user
   const posters = await Poster.find({ userId }).sort({ createdAt: -1 });
 
   return res.status(200).json(
@@ -86,7 +115,14 @@ const regeneratePoster = asyncHandler(async (req: AuthRequest, res: Response) =>
   try {
     const generatedImageUrl = await renderPosterToImage({
       htmlLayout: template.htmlLayout,
-      formData: { ...poster.formData, headline: poster.formData.headline },
+      formData: {
+        ...poster.formData,
+        name: (poster.formData?.name as string) || "",
+        designation: (poster.formData?.designation as string) || "",
+        party: (poster.formData?.party as string) || "",
+        unionOrThanaOrDistrict: (poster.formData?.unionOrThanaOrDistrict as string) || "",
+        headline: poster.formData?.headline || "",
+      },
       uploadedPhotoUrls: poster.uploadedPhotoUrls,
       slotsCount: 3, 
     });
@@ -104,7 +140,7 @@ const regeneratePoster = asyncHandler(async (req: AuthRequest, res: Response) =>
     await poster.save();
     throw new ApiError(500, 'Failed to regenerate poster image.');
   }
-})
+});
 
 // Delete Poster
 const deletePoster = asyncHandler(async (req: AuthRequest, res: Response) => {
